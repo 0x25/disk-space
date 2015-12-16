@@ -1,0 +1,72 @@
+#!/bin/bash
+# 17/02/2015
+# chmod +x <script>
+# paste the script in a active $PATH
+
+function G {
+	echo "file/folder > G"
+	du -ha -d 1 | sort -h -r | grep --color=always ^[0-9.,]*G 
+	echo -e "\n"
+}
+
+function M {
+	echo "file/folder > M"
+	du -ha -d 1 | sort -h -r | grep --color=always ^[0-9.,]*M 
+	echo -e "\n"
+}
+
+function K {
+	echo -e "file/folder > K"
+	du -ha -d 1 | sort -h -r | grep --color=always ^[0-9.,]*K
+	echo -e "\n"
+}
+
+function O {
+	echo -e "\nother"
+	du -ha -d 1 | sort -h -r | grep --color=never $'^[0-9.,]*\t'
+	echo -e "\n"
+}
+
+function help {
+	echo "Return the size of folder/file in current dir"
+	echo "Option:"
+	echo " -g Giga"
+	echo " -m Mega"
+	echo " -k Kilo"
+	echo " -o other"
+	echo " -h for help"
+}
+
+while getopts ":gmkoh" opt; do
+    case $opt in
+    g)
+    	G
+      	;;
+    m)
+      	M
+      	;;
+    k)
+      	K
+      	;;
+    o)
+      	O
+      	;;
+    h)
+        help 
+        ;;
+    \?)
+	echo "wrong option"
+      	help
+      	exit 0
+      	;;
+    esac
+done
+
+
+if [ $OPTIND -eq 1 ]; then 
+	echo "-h for show option"
+        G
+        M
+        K
+        O
+fi
